@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Linq;
+
+public class HintManager : MonoBehaviour
+{
+    public int Hintcheck = 10;
+    public Text Hintbutton;
+    public Text Hinttext;
+
+    private void Update()
+    {
+        Hintbutton.GetComponent<Text>().text = "Hint " + Hintcheck + " 개 남음";
+    }
+    public void textremove()
+    {
+        Hinttext.gameObject.SetActive(false);
+    }
+    public void Hint()
+    {
+        if (Hintcheck > 0)
+        {
+            Hinttext.gameObject.SetActive(true); // 힌트 글자 띄움
+            int Subcount = GameObject.FindWithTag("MainCamera").GetComponent<WordGame>().currLevel.subWords.Count;
+            // subword 의 갯수 가져오기
+            int Hintcount = Random.Range(1, Subcount); // 힌트를 뽑아낼 랜덤 변수 , 범위는 subword 의 갯수 
+            Hinttext.GetComponent<Text>().text = GameObject.FindWithTag("MainCamera").GetComponent<WordGame>().currLevel.subWords[Hintcount];
+            // 힌트 띄워줌
+            Hintcheck--; // 힌트 갯수 삭제 
+            Invoke("textremove", 5); // 힌트 글자 삭제
+        }
+    }
+
+}
